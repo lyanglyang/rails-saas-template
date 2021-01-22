@@ -29,7 +29,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Migration to add active property to users
-class AddActiveToUsers < ActiveRecord::Migration
+class AddActiveToUsers < ActiveRecord::Migration[4.2]
   def change
     add_column :users, :active, :boolean, null: false, default: true, after: :email
   end

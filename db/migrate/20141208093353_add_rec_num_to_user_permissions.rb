@@ -29,7 +29,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Migration to add rec_num property to user_permissions
-class AddRecNumToUserPermissions < ActiveRecord::Migration
+class AddRecNumToUserPermissions < ActiveRecord::Migration[4.2]
   def change
     add_column :user_permissions, :rec_num, :integer, null: false, after: :id
     add_index :user_permissions, [:account_id, :rec_num], unique: true

@@ -29,7 +29,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Migration to create cancellation reasons
-class CreateCancellationReasons < ActiveRecord::Migration
+class CreateCancellationReasons < ActiveRecord::Migration[4.2]
   def change
     create_table :cancellation_reasons do |t|
       t.references :cancellation_category, null: false, index: true

@@ -29,7 +29,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Migration to add app events model to database
-class CreateAppEvents < ActiveRecord::Migration
+class CreateAppEvents < ActiveRecord::Migration[4.2]
   def change
     create_table :app_events do |t|
       t.integer :account_id

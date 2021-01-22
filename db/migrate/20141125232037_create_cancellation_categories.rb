@@ -29,7 +29,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Migration to create cancellation categories
-class CreateCancellationCategories < ActiveRecord::Migration
+class CreateCancellationCategories < ActiveRecord::Migration[4.2]
   def change
     create_table :cancellation_categories do |t|
       t.string :name, limit: 120, null: false

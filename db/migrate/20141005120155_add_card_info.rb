@@ -29,7 +29,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Migration to add card info for account
-class AddCardInfo < ActiveRecord::Migration
+class AddCardInfo < ActiveRecord::Migration[4.2]
   def change
     add_column :accounts, :card_brand, :string, limit: 25, null: true, after: :card_token
     add_column :accounts, :card_last4, :string, limit: 4, null: true, after: :card_brand

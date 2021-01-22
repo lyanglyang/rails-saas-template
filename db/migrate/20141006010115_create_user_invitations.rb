@@ -29,7 +29,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Migration to user invitations
-class CreateUserInvitations < ActiveRecord::Migration
+class CreateUserInvitations < ActiveRecord::Migration[4.2]
   def change
     create_table :user_invitations do |t|
       t.references :account

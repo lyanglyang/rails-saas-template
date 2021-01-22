@@ -29,7 +29,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Migration to add new cancellation fields to accounts
-class NewAccountCancellationFields < ActiveRecord::Migration
+class NewAccountCancellationFields < ActiveRecord::Migration[4.2]
   def up
     add_column :accounts, :cancellation_category_id, :integer, null: true, after: :cancellation_category
     add_column :accounts, :cancellation_reason_id, :integer, null: true, after: :cancellation_reason

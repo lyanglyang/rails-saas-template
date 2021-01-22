@@ -29,7 +29,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Migration to add hostname and subdomain to accounts
-class AddHostAndSubdomainToAccounts < ActiveRecord::Migration
+class AddHostAndSubdomainToAccounts < ActiveRecord::Migration[4.2]
   def change
     add_column :accounts, :hostname, :string, limit: 255, null: true, after: :active
     add_column :accounts, :subdomain, :string, limit: 64, null: true, after: :hostname

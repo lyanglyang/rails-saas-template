@@ -29,7 +29,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Migration to add hostname and subdomain to accounts
-class AddPlanLabel < ActiveRecord::Migration
+class AddPlanLabel < ActiveRecord::Migration[4.2]
   def change
     add_column :plans, :label, :string, limit: 30, null: true, after: :paused_plan_id
   end

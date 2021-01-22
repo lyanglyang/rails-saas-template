@@ -29,7 +29,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Migration to add accounts model to database
-class CreateAccounts < ActiveRecord::Migration
+class CreateAccounts < ActiveRecord::Migration[4.2]
   def change
     create_table :accounts do |t|
       t.string :company_name, limit: 255, null: false

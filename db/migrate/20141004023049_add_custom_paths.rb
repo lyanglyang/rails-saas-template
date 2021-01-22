@@ -29,7 +29,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Migration to add custom path support to accounts and plans
-class AddCustomPaths < ActiveRecord::Migration
+class AddCustomPaths < ActiveRecord::Migration[4.2]
   def change
     add_column :plans, :allow_custom_path, :boolean, null: false, default: false, after: :max_users
     add_column :accounts, :custom_path, :string, null: true, limit: 60, after: :active

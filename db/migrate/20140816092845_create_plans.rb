@@ -29,7 +29,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Migration to add plans model to database
-class CreatePlans < ActiveRecord::Migration
+class CreatePlans < ActiveRecord::Migration[4.2]
   def change
     create_table :plans do |t|
       t.string :stripe_id, limit: 80

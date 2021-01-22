@@ -29,7 +29,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Migration to add require_card_upfront to plans
-class CreateAddCardUpfrontToPlans < ActiveRecord::Migration
+class CreateAddCardUpfrontToPlans < ActiveRecord::Migration[4.2]
   def change
     add_column :plans, :require_card_upfront, :boolean, null: false, default: false, after: :trial_period_days
   end
