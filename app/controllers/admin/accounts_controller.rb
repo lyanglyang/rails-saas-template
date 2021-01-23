@@ -74,7 +74,7 @@ class Admin::AccountsController < Admin::ApplicationController
   end
 
   def update
-    if @account.update_attributes(accounts_params)
+    if @account.update(accounts_params)
       StripeGateway.account_update(@account.id)
       AppEvent.success("Updated account #{@account}", @account, current_user)
       redirect_to admin_account_path(@account),

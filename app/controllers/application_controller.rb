@@ -75,7 +75,6 @@ class ApplicationController < ActionController::Base
   # Find the current account, returning it or nil if there is no current account
   def current_account
     # binding.pry
-    @current_account ||= Account.first
-    # @current_account ||= Account.find_account(params[:path], request.host, request.subdomain.last)
+    @current_account ||= Account.find_account(params[:path], request.host, request.subdomain.last)
   end
 end

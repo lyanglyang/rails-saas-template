@@ -72,7 +72,7 @@ class Admin::PlansController < Admin::ApplicationController
   end
 
   def update
-    if @plan.update_attributes(plans_update_params)
+    if @plan.update(plans_update_params)
       StripeGateway.plan_update(@plan.id)
       AppEvent.success("Updated plan #{@plan}", nil, current_user)
       redirect_to admin_plan_path(@plan),

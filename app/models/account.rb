@@ -79,10 +79,10 @@ class Account < ActiveRecord::Base
     unless: -> { custom_path.nil? }
   validates :email, length: { maximum: 255 }, presence: true
   validates :hostname, length: { maximum: 255 }
-  validates :hostname,
-    format: { with: /\A([a-z0-9]+[a-z0-9\-]*)((\.([a-z0-9]+[a-z0-9\-]*))+)\Z/i },
-    uniqueness: true,
-    unless: -> { custom_path.nil? }
+  # validates :hostname,
+  #   format: { with: /\A([a-z0-9]+[a-z0-9\-]*)((\.([a-z0-9]+[a-z0-9\-]*))+)\Z/ },
+  #   uniqueness: true,
+  #   unless: -> { custom_path.nil? }
   validates :paused_plan_id, numericality: { integer_only: true }, allow_nil: true
   validates :plan_id, numericality: { integer_only: true }, presence: true
   validates :stripe_customer_id, length: { maximum: 60 }
@@ -132,7 +132,7 @@ class Account < ActiveRecord::Base
   def self.find_account(path, host, subdomain)
     if path
       # Assume that they're using http://www.example.com/ACCOUNT
-      @current_account = Account.find_by_path!(path)
+      @current_account = Account.find_by_custom_path!(path)
     else
       # Try http://ACCOUNT/ then http://ACCOUNT.example.com/
       @current_account = Account.find_by_hostname(host)
