@@ -36,9 +36,9 @@ class Account < ActiveRecord::Base
   belongs_to :cancellation_reason
 
   has_many :app_events, dependent: :destroy
+  has_many :user_permissions, dependent: :destroy
   has_many :users, through: :user_permissions
   has_many :user_invitations, dependent: :destroy
-  has_many :user_permissions, dependent: :destroy
 
   delegate :currency, :allow_custom_path, :allow_hostname, :allow_subdomain, :stripe_id, to: :plan, prefix: true
   delegate :stripe_id, to: :paused_plan, prefix: true, allow_nil: true
@@ -62,39 +62,40 @@ class Account < ActiveRecord::Base
   validates :address_line2, length: { maximum: 120 }
   validates :address_state, length: { maximum: 60 }
   validates :address_zip, length: { maximum: 20 }
-  validates :cancellation_category_id, presence: true, if: '!cancelled_at.nil?'
+  # validates :cancellation_category_id, presence: true, unless: -> { cancelled_at.nil? }
   validates :cancellation_message, length: { maximum: 255 }
-  validates :cancellation_message, presence: true, if: :require_cancellation_message
-  validates :cancellation_reason_id, presence: true, if: :require_cancellation_reason_id
+  # validates :cancellation_message, presence: true, if: :require_cancellation_message
+  # validates :cancellation_reason_id, presence: true, if: :require_cancellation_reason_id
   validates :card_token, length: { maximum: 60 }
-  validates :card_token, presence: true, if: 'plan_id? && plan.require_card_upfront'
+  validates :card_token, presence: true, if: -> { plan_id? && plan.require_card_upfront }
   validates :company_name, length: { maximum: 255 }, presence: true
   validates :custom_path, length: { in: 2..60 }, allow_nil: true
-  validates :custom_path, uniqueness: true, unless: 'custom_path.nil?'
+  validates :custom_path, uniqueness: true, unless: -> { custom_path.nil? }
   validates :custom_path,
-            format: { with: /\A[a-z0-9]+\Z/i, message: 'can only contain letters and numbers' },
-            unless: 'custom_path.nil?'
+    format: { with: /\A[a-z0-9]+\Z/i, message: 'can only contain letters and numbers' },
+    unless: -> { custom_path.nil? }
   validates :custom_path,
-            format: { with: /\A.*[a-z].*\Z/i, message: 'must contain at least one letter' },
-            unless: 'custom_path.nil?'
+    format: { with: /\A.*[a-z].*\Z/i, message: 'must contain at least one letter' },
+    unless: -> { custom_path.nil? }
   validates :email, length: { maximum: 255 }, presence: true
   validates :hostname, length: { maximum: 255 }
   validates :hostname,
-            format: { with: /\A([a-z0-9]+[a-z0-9\-]*)((\.([a-z0-9]+[a-z0-9\-]*))+)\Z/i },
-            uniqueness: true,
-            unless: 'hostname.nil?'
+    format: { with: /\A([a-z0-9]+[a-z0-9\-]*)((\.([a-z0-9]+[a-z0-9\-]*))+)\Z/i },
+    uniqueness: true,
+    unless: -> { custom_path.nil? }
   validates :paused_plan_id, numericality: { integer_only: true }, allow_nil: true
   validates :plan_id, numericality: { integer_only: true }, presence: true
   validates :stripe_customer_id, length: { maximum: 60 }
   validates :stripe_subscription_id, length: { maximum: 60 }
   validates :subdomain, length: { maximum: 64 }
   validates :subdomain,
-            format: { with: /\A([a-z0-9]+[a-z0-9\-]*)\Z/i },
-            uniqueness: true,
-            unless: 'subdomain.nil?'
+    format: { with: /\A([a-z0-9]+[a-z0-9\-]*)\Z/i },
+    uniqueness: true,
+    unless: ->{subdomain.nil?}
   validates_associated :users, on: :create
 
   def require_cancellation_reason_id
+    binding.pry
     return false if cancelled_at.nil?
     return false if cancellation_category.nil?
     return true if cancellation_category.cancellation_reasons.available.count > 0
@@ -113,7 +114,7 @@ class Account < ActiveRecord::Base
   end
 
   def address_country_name
-    c = Country[address_country]
+    c =  ISO3166::Country.new(address_country)
     if c.nil?
       address_country
     else
@@ -171,10 +172,10 @@ class Account < ActiveRecord::Base
 
   def restore
     params = { cancellation_category: nil,
-               cancellation_reason: nil,
-               cancellation_message: nil,
-               cancelled_at: nil,
-               active: true }
+      cancellation_reason: nil,
+      cancellation_message: nil,
+      cancelled_at: nil,
+      active: true }
     update_attributes(params)
   end
 

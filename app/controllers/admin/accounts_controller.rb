@@ -49,6 +49,10 @@ class Admin::AccountsController < Admin::ApplicationController
   def create
     @account = Account.new(accounts_params)
     @account.card_token = 'dummy'
+    @account.cancellation_category_id = 1
+    @account.cancellation_reason = CancellationReason.first
+    binding.pry
+
     if @account.save
       StripeGateway.account_create(@account.id)
       AppEvent.success("Created account #{@account}", @account, current_user)
